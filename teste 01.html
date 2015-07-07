@@ -1,0 +1,248 @@
+<html>
+<body>
+<canvas id="myCanvas" width="800" height="600" style="border:1px solid #000000;">
+</canvas>
+<script>
+
+	var c = document.getElementById("myCanvas");
+		ctx = c.getContext("2d");
+
+		key = "";
+		moveLeft = false;
+		moveRight = false;
+		moveDown = false;
+		moveUp = false;
+	
+		Ony = {x: 400, y: 550, w: 50, h: 50, speedY: 20, speedX: 15}
+		On2 = {x: 50 + Math.floor(Math.random() * 200),y:-100,w:10,h:100,speedY:15 }	
+		On3 = {x: 200 + Math.floor(Math.random() * 400),y:-300,w:10,h:100,speedY:20 }	
+		On4 = {x: 400 + Math.floor(Math.random() * 600),y:-500,w:10,h:100,speedY:15 }
+		On5 = {x: 600 + Math.floor(Math.random() * 730),y:-700,w:10,h:100,speedY:20 }
+		On6 = {x: Ony.x,y:-900,w:10,h:100,speedY:15 }
+	
+		vida = {x:1500, y: -500, w: 50, h: 50, speedY: 15}
+		vida_enter = -1
+		contador_vida = 3
+		pontuacao = 0
+		limite = false
+
+		On = new Image
+		On.src = "Images/Ony.png";
+		Image_On2 = new Image
+		Image_On2.src = "Images/On2.png"
+		Image_On3 = new Image
+		Image_On3.src = "Images/On2.png";
+		Image_On4 = new Image
+		Image_On4.src = "Images/On2.png";
+		Image_On5 = new Image
+		Image_On5.src = "Images/On2.png";
+		Image_On6 = new Image
+		Image_On6.src = "Images/On2.png";
+		vidaloca = new Image
+		vidaloca.src = "Images/coracao.png"
+		
+	var _keyDown = function(e)
+	{
+		key = e.keyCode;
+		switch (e.keyCode)
+		{
+			case 37: 
+				moveLeft = true;
+				break;
+
+			case 39: 
+				moveRight = true;
+				break;
+			
+			case 40:
+				moveDown = true;
+				break;
+			
+			case 38:
+				moveUp = true;
+				break;
+				
+			default:
+				console.log("keyDown: " + e.keyCode);
+				break;
+		}
+	}
+
+	var _keyUp = function(e)
+	{
+		key = "";
+		switch (e.keyCode)
+		{
+			case 37:
+				moveLeft = false;
+				break;
+
+			case 39:
+				moveRight = false;
+				break;
+			
+			case 40:
+				moveDown = false;
+				break;
+			
+			case 38:
+				moveUp = false;
+				break;
+				
+			default:
+				console.log("keyUp: " + e.keyCode);
+				break;	
+		}				
+	}
+	
+	document.addEventListener("keydown", _keyDown, true);
+	document.addEventListener("keyup",   _keyUp,   true);	
+	function drawText(x,y,text)
+	{
+		ctx.fillStyle = "#000000";
+		ctx.font = "20px Arial";
+		ctx.fillText(text, x, y);		
+	}
+	
+	function update()
+	{
+		vida.y += vida.speedY
+		On2.y += On2.speedY
+		On3.y += On3.speedY
+		On4.y += On4.speedY
+		On5.y += On5.speedY	
+		On6.y += On6.speedY
+	
+			if (On2.speedY >= 33) limite = true
+			if (On3.speedY >= 33) limite = true
+			if (On4.speedY >= 33) limite = true
+			if (On5.speedY >= 35) limite = true
+			if (On6.speedY >= 40) limite = true
+		
+			if (On2.y + On2.h > 700) {
+				On2.y = -100
+				On2.x = 50 + Math.floor(Math.random() * 200)
+				On2.speedY += 0.2
+					if(limite) On2.speedY = 33}
+		
+			if (On3.y + On3.h > 700) {
+				On3.y = -200
+				On3.x = 200 + Math.floor(Math.random() * 400)
+				On3.speedY += 0.18
+					if(limite) On3.speedY = 33}
+		
+			if (On4.y + On4.h > 700) {
+				On4.y = -300
+				On4.x = 400 + Math.floor(Math.random() * 600)
+				On4.speedY += 0.18
+					if(limite) On4.speedY = 33}
+		
+			if (On5.y + On5.h > 700) {
+				On5.y = -400
+				On5.x = 600 + Math.floor(Math.random() * 750)
+				On5.speedY += 0.08
+					if(limite) On5.speedY = 35}
+		
+			if (On6.y + On6.h > 700) {
+				On6.y = -500
+				On6.x = Ony.x
+				On6.speedY += 0.08
+					if(limite) On6.speedY = 40}
+			
+			if (vida.y + vida.h > 700) {
+				vida.y = -100
+				vida.x = 1500}
+		
+			if (Ony.x >= vida.x - vida.w && Ony.x <= vida.x + vida.w && vida.y + vida.h >= Ony.y){
+				vida_enter = 1
+				vida.x = 1500
+				contador_vida += 1
+				pontuacao += 2}
+		
+			if (On2.y + On2.h >= Ony.y && On2.x + On2.w >= Ony.x && On2.x + On2.w <= Ony.x + Ony.w){
+				On2.y = -100
+				On2.x = 50 + Math.floor(Math.random() * 200)
+				contador_vida -= 1
+				pontuacao -= 5}
+		
+			if (On3.y + On3.h >= Ony.y && On3.x + On3.w >= Ony.x && On3.x + On3.w <= Ony.x + Ony.w){ 
+				On3.y = -100
+				On3.x = 200 + Math.floor(Math.random() * 400)
+				contador_vida -= 1
+				pontuacao -= 5}
+		
+			if (On4.y + On4.h >= Ony.y && On4.x + On4.w >= Ony.x && On4.x + On4.w <= Ony.x + Ony.w){ 
+				On4.y = -100
+				On4.x = 400 + Math.floor(Math.random() * 600)
+				contador_vida -= 1
+				pontuacao -= 5}
+		
+			if (On5.y + On5.h >= Ony.y && On5.x + On5.w >= Ony.x && On5.x + On5.w <= Ony.x + Ony.w){ 
+				On5.y = -100
+				On5.x = 600 + Math.floor(Math.random() * 730)
+				contador_vida -= 1
+				pontuacao -= 5}
+		
+			if (On6.y + On6.h >= Ony.y && On6.x + On6.w >= Ony.x && On6.x + On6.w <= Ony.x + Ony.w){ 
+				On6.y = -400
+				On6.x = Ony.x
+				On6.speedY += 0.06
+				contador_vida -= 1
+				pontuacao -= 5}
+			
+			if(contador_vida == 0){
+				contador_vida = 3
+				pontuacao = 0}
+		
+			if (moveLeft) Ony.x -= Ony.speedX
+			if (moveRight) Ony.x += Ony.speedX
+			if (Ony.x + Ony.w < 0) Ony.x = 800
+			if (Ony.x > 800) Ony.x = -50
+	}
+	
+	function Timevida()
+	{
+		setTimeout(Timevida, 10000)
+		vida_enter *= -1
+			if (vida_enter == -1){ 
+				vida.x = 50 + Math.floor(Math.random() * 650)
+				vida.y = -50}
+	}
+	
+	function pontos()
+	{
+		setTimeout(pontos, 500)
+		pontuacao += 1
+	}
+	
+	function draw()
+	{
+		ctx.clearRect(0,0,800,600);
+		ctx.font = "25px Arial";
+		ctx.fillStyle = "#000000";
+		ctx.fillText("vida: " + contador_vida ,20, 30);
+		ctx.font = "25px Arial";
+		ctx.fillStyle = "#000000";
+		ctx.fillText("pontos: " + pontuacao ,660, 30);
+		ctx.drawImage (On, Ony.x, Ony.y, Ony.w, Ony.h);
+		ctx.drawImage (vidaloca, vida.x, vida.y, vida.w, vida.h);
+		ctx.drawImage (Image_On2, On2.x, On2.y, On2.w, On2.h);
+		ctx.drawImage (Image_On3, On3.x, On3.y, On3.w, On3.h);
+		ctx.drawImage (Image_On4, On4.x, On4.y, On4.w, On4.h);
+		ctx.drawImage (Image_On5, On5.x, On5.y, On5.w, On5.h);
+		ctx.drawImage (Image_On6, On6.x, On6.y, On6.w, On6.h);
+	}
+		
+	function loop()
+	{
+		setTimeout(loop, 30);
+		update()
+		draw()
+	}
+	pontos()
+	Timevida()
+	loop();
+	
+</script>
+</body>
+</html>
